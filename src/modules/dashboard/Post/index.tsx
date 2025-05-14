@@ -63,13 +63,13 @@ const Post = () => {
       key: "title",
       align: "center",
     },
-    // {
-    //   title: "Author",
-    //   dataIndex: "user",
-    //   key: "name",
-    //   align: "center",
-    //   render: (value: any) => <div>{value.name}</div>,
-    // },
+    {
+      title: "Author",
+      dataIndex: "user",
+      key: "name",
+      align: "center",
+      render: (value: any) => <div>{value?.name}</div>,
+    },
     {
       title: "Created At",
       dataIndex: "createdTime",

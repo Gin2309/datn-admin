@@ -8,7 +8,7 @@ const schema = Yup.object().shape({
     .transform((value) => (value === "" ? null : value))
     .nullable(),
   shortDesc: Yup.string()
-    .max(50, "Short description cannot exceed 50 characters.")
+    .max(150, "Short description cannot exceed 150 characters.")
     .required("Short description is required."),
   tags: Yup.string().required("Tags are required."),
 });
