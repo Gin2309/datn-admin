@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useRecoilValue } from "recoil";
 
 import Label from "@/components/CustomLabel";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -15,6 +16,7 @@ import { updateOrder, getOrderDetail } from "@/api/order.service";
 import { getFeedback } from "@/api/auth.service";
 import { getEmployeeList } from "@/api/user.service";
 import { assignedOrder } from "@/api/order.service";
+import { profileState } from "@/recoil/state";
 
 const color: any = {
   DONE: "success",
@@ -35,6 +37,9 @@ const DetailOrder = ({ oid }: { oid: any }) => {
   const [imageUrl, setImageUrl] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
+
+  const profile = useRecoilValue(profileState);
+  const isAdminOrSuperAdmin = profile?.data?.role === "ADMIN" || profile?.data?.role === "SUPERADMIN";
 
   const { data, refetch, isLoading } = useQuery(["ORDER"], () => getOrderDetail(oid));
   const orderData = data?.data;
@@ -128,7 +133,7 @@ const DetailOrder = ({ oid }: { oid: any }) => {
                       setSelectedEmployee(value);
                       assignMutation(value);
                     }}
-                    disabled={orderData?.status === "DONE" || orderData?.status === "AWAITING"}
+                    disabled={orderData?.status === "DONE" || orderData?.status === "AWAITING" || !isAdminOrSuperAdmin}
                     isLoading={isLoadingEmployees || isAssigning}
                   />
                 </div>
