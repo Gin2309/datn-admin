@@ -8,7 +8,9 @@ const schema = Yup.object().shape({
     .matches(/^[0-9]+$/, "Phone number must be only digits")
     .required("Phone is required"),
   avatar: Yup.string().url("Invalid URL format"),
-  password: Yup.string().required("Password is required"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters"),
 });
 
 export default schema;

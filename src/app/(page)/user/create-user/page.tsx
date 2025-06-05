@@ -1,9 +1,9 @@
 import React from "react";
-import User from "@/modules/dashboard/User/User";
+import CreateUser from "@/modules/dashboard/User/Create";
 
 const page = () => {
   return (
-      <User />
+    <CreateUser />
   );
 };
 
