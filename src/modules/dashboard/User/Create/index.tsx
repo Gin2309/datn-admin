@@ -1,8 +1,8 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 
-import { message, Spin, Skeleton } from "antd";
+import { message, Spin, Upload } from "antd";
 import Label from "@/components/CustomLabel";
 import { CustomInput } from "@/components/CustomInput";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -12,53 +12,26 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import InputError from "@/components/InputError";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getUserDetail, updateUser } from "@/api/user.service";
+import { useMutation } from "@tanstack/react-query";
+import { createUser } from "@/api/user.service";
+import { uploadFile } from "@/api/auth.service";
 
-const DetailUser = ({ id }: { id: any }) => {
+const CreateUser = () => {
   const router = useRouter();
 
-  const { data, isLoading, refetch } = useQuery(["DETAIL_USER"], () => getUserDetail(id), {
-    enabled: !!id,
-  });
-
-  const detail = data?.data;
-
   const {
-    getValues,
-    setValue,
     control,
-    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
-    defaultValues: {
-      name: detail?.name || "",
-      lastName: detail?.lastName || "",
-      email: detail?.email || "",
-      phone: detail?.phone || "",
-      avatar: detail?.avatar || "",
-    },
   });
 
-  useEffect(() => {
-    if (detail) {
-      reset({
-        name: detail?.name,
-        lastName: detail?.lastName,
-        email: detail?.email,
-        phone: detail?.phone,
-        avatar: detail?.avatar,
-      });
-    }
-  }, [detail, reset]);
-
-  const { mutate: updateMutation, isLoading: isUpdating } = useMutation((data: any) => updateUser(id, data), {
+  const { mutate: updateMutation, isLoading: isUpdating } = useMutation((data: any) => createUser(data), {
     onSuccess: () => {
       message.success("Success!");
-      refetch();
+      router.push("/user");
     },
     onError: (err: any) => {
       message.error(err.response?.data?.message);
@@ -72,12 +45,9 @@ const DetailUser = ({ id }: { id: any }) => {
   return (
     <>
       <div className="create-order w-full px-4 md:px-6 bg-[#fbfbfb] flex flex-col gap-9 md:gap-12 mb-6">
-        {isLoading ? (
-          <Skeleton active style={{ height: "400px" }} />
-        ) : (
-          <>
+
             <div className="flex justify-between pt-4 md:pt-0 mb-[-20px] md:mb-0">
-              <h1 className="text-[#212529] font-medium text-[24px]">{detail?.name}</h1>
+              <h1 className="text-[#212529] font-medium text-[24px]">Create User</h1>
 
               <div className="flex gap-2">
                 <div onClick={() => router.back()} className="btn-secondary">
@@ -166,12 +136,31 @@ const DetailUser = ({ id }: { id: any }) => {
                   )}
                 />
               </div>
+
+              <div>
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <div className="col-span-1 md:col-span-2">
+                      <Label label="Password" />
+                      <CustomInput
+                        className={`suffix-icon h-11 !rounded`}
+                        placeholder="Enter password"
+                        onChange={onChange}
+                        value={value ?? ""}
+                      />
+                      <InputError error={errors.password?.message} />
+                    </div>
+                  )}
+                />
+              </div>
             </div>
-          </>
-        )}
+      
+       
       </div>
     </>
   );
 };
 
-export default DetailUser;
+export default CreateUser;

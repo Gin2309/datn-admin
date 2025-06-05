@@ -10,6 +10,10 @@ export function getUserDetail(id: any) {
   return axiosClient.get(`user/${id}`);
 }
 
+export function createUser(data: any) {
+  return axiosClient.post(`user`, data);
+}
+
 export function getEmployeeList() {
   return axiosClient.get(`user/employees`);
 }

@@ -106,17 +106,21 @@ const User = () => {
         style={{ minHeight: "calc(100vh - 24px)" }}
         className="w-full px-4 md:px-6 bg-[#fbfbfb] flex flex-col gap-9 md:gap-12 mb-6"
       >
-        <div className="pt-4 md:pt-0 mb-[-20px] md:mb-0">
+        <div className="pt-4 md:pt-0 mb-[-20px] md:mb-0 flex justify-between">
           <h1 className="text-[#212529] font-medium text-[24px]">User Management</h1>
+        
+          <div onClick={() => router.push("/user/create-user")} className="btn-primary gap-2">
+            <Image src={addIcon} alt="icon" /> Create User
+          </div>
         </div>
 
         <div className="card">
-          <Input
+          {/* <Input
             placeholder="Search"
             onChange={(e: any) => setFormFilter((prev) => ({ ...prev, search: e.target.value }))}
             className="!h-10 mb-4"
             prefix={<Image src={search} alt="icon" height={20} width={20} className="mr-2" />}
-          />
+          /> */}
 
           <Table
             columns={columns}

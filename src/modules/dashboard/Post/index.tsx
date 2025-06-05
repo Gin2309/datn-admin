@@ -110,12 +110,12 @@ const Post = () => {
         </div>
 
         <div className="card">
-          <Input
+          {/* <Input
             placeholder="Search"
             onChange={(e: any) => setFormFilter((prev) => ({ ...prev, search: e.target.value }))}
             className="!h-10 mb-4"
             prefix={<Image src={search} alt="icon" height={20} width={20} className="mr-2" />}
-          />
+          /> */}
 
           <Table
             columns={columns}
