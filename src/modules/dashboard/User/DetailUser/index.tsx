@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import { message, Spin, Skeleton } from "antd";
 import Label from "@/components/CustomLabel";
 import { CustomInput } from "@/components/CustomInput";
+import { CustomSelect } from "@/components/CustomSelect";
 import { LoadingOutlined } from "@ant-design/icons";
+import CustomUpload from "@/components/CustomUpload";
 
 import schema from "./schema";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -18,6 +20,12 @@ import { getUserDetail, updateUser } from "@/api/user.service";
 const DetailUser = ({ id }: { id: any }) => {
   const router = useRouter();
 
+  const roleOptions = [
+    { value: "USER", label: "User" },
+    { value: "EMPLOYEE", label: "Employee" },
+    { value: "ADMIN", label: "Admin" },
+  ];
+
   const { data, isLoading, refetch } = useQuery(["DETAIL_USER"], () => getUserDetail(id), {
     enabled: !!id,
   });
@@ -25,8 +33,6 @@ const DetailUser = ({ id }: { id: any }) => {
   const detail = data?.data;
 
   const {
-    getValues,
-    setValue,
     control,
     reset,
     handleSubmit,
@@ -36,9 +42,9 @@ const DetailUser = ({ id }: { id: any }) => {
     mode: "onChange",
     defaultValues: {
       name: detail?.name || "",
-      lastName: detail?.lastName || "",
       email: detail?.email || "",
       phone: detail?.phone || "",
+      role: detail?.role || "",
       avatar: detail?.avatar || "",
     },
   });
@@ -47,9 +53,9 @@ const DetailUser = ({ id }: { id: any }) => {
     if (detail) {
       reset({
         name: detail?.name,
-        lastName: detail?.lastName,
         email: detail?.email,
         phone: detail?.phone,
+        role: detail?.role,
         avatar: detail?.avatar,
       });
     }
@@ -90,81 +96,107 @@ const DetailUser = ({ id }: { id: any }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <Controller
-                  name="name"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <div className="col-span-1 md:col-span-2">
-                      <Label label="Name" required />
-                      <CustomInput
-                        className={`suffix-icon h-11 !rounded`}
-                        placeholder="Enter title name"
-                        onChange={onChange}
-                        value={value}
+            <div className="flex flex-col gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div className="col-span-1 md:col-span-8">
+                  <div className="flex flex-col gap-6">
+                    <div>
+                      <Controller
+                        name="name"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                          <div className="col-span-1 md:col-span-2">
+                            <Label label="Name" required />
+                            <CustomInput
+                              className={`suffix-icon h-11 !rounded`}
+                              placeholder="Enter title name"
+                              onChange={onChange}
+                              value={value}
+                            />
+                            <InputError error={errors.name?.message} />
+                          </div>
+                        )}
                       />
-                      <InputError error={errors.name?.message} />
                     </div>
-                  )}
-                />
-              </div>
 
-              <div>
-                <Controller
-                  name="lastName"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <div className="col-span-1 md:col-span-2">
-                      <Label label="Last Name" />
-                      <CustomInput
-                        className={`suffix-icon h-11 !rounded`}
-                        placeholder="Enter last name"
-                        onChange={onChange}
-                        value={value}
+                    <div>
+                      <Controller
+                        name="role"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                          <div className="col-span-1 md:col-span-2">
+                            <Label label="Role" required />
+                            <CustomSelect
+                              placeholder="Select role"
+                              className="suffix-icon h-11 !rounded"
+                              options={roleOptions}
+                              onChange={onChange}
+                              value={value}
+                            />
+                            <InputError error={errors.role?.message} />
+                          </div>
+                        )}
                       />
-                      <InputError error={errors.lastName?.message} />
                     </div>
-                  )}
-                />
-              </div>
 
-              <div>
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <div className="col-span-1 md:col-span-2">
-                      <Label label="Email" />
-                      <CustomInput
-                        className={`suffix-icon h-11 !rounded`}
-                        placeholder="Enter email"
-                        onChange={onChange}
-                        value={value ?? ""}
+                    <div>
+                      <Controller
+                        name="email"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                          <div className="col-span-1 md:col-span-2">
+                            <Label label="Email" required />
+                            <CustomInput
+                              className={`suffix-icon h-11 !rounded`}
+                              placeholder="Enter email"
+                              onChange={onChange}
+                              value={value ?? ""}
+                            />
+                            <InputError error={errors.email?.message} />
+                          </div>
+                        )}
                       />
-                      <InputError error={errors.email?.message} />
                     </div>
-                  )}
-                />
-              </div>
 
-              <div>
-                <Controller
-                  name="phone"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <div className="col-span-1 md:col-span-2">
-                      <Label label="Phone" />
-                      <CustomInput
-                        className={`suffix-icon h-11 !rounded`}
-                        placeholder="Enter phone"
-                        onChange={onChange}
-                        value={value ?? ""}
+                    <div>
+                      <Controller
+                        name="phone"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                          <div className="col-span-1 md:col-span-2">
+                            <Label label="Phone" required />
+                            <CustomInput
+                              className={`suffix-icon h-11 !rounded`}
+                              placeholder="Enter phone"
+                              onChange={onChange}
+                              value={value ?? ""}
+                            />
+                            <InputError error={errors.phone?.message} />
+                          </div>
+                        )}
                       />
-                      <InputError error={errors.phone?.message} />
                     </div>
-                  )}
-                />
+
+                  
+                  </div>
+                </div>
+
+                <div className="col-span-1 md:col-span-4">
+                  <div className="sticky top-6">
+                    <Label label="Avatar" />
+                    <Controller
+                      name="avatar"
+                      control={control}
+                      render={({ field: { onChange, value } }) => (
+                        <CustomUpload
+                          value={value}
+                          onChange={(url: string) => onChange(url)}
+                        />
+                      )}
+                    />
+                    <InputError error={errors.avatar?.message} />
+                  </div>
+                </div>
               </div>
             </div>
           </>
