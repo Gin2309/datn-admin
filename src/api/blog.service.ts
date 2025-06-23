@@ -23,7 +23,7 @@ export function getBlogById(id: any) {
 }
 
 export function updateBlog(id: any, data: any) {
-  return axiosClient.put(`posts/${id}`, data);
+  return axiosClient.patch(`posts/${id}`, data);
 }
 
 export function createBlog(data: any) {
