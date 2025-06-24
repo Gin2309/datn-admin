@@ -8,6 +8,7 @@ import CustomPagination from "@/components/CustomPagination";
 
 import { useQuery } from "@tanstack/react-query";
 import { getOrderList } from "@/api/order.service";
+import Noti from "./Noti";
 
 const tabs = [
   { key: "", label: "All order" },
@@ -29,6 +30,7 @@ const Order = () => {
     status: "",
     sortDesc: true,
   });
+  const [isNotiOpen, setIsNotiOpen] = useState(false);
 
   const currentTab = tabs.find((tab) => tab.key === formFilter.status) || { label: "All order" };
 
@@ -43,14 +45,22 @@ const Order = () => {
     }));
   };
 
+  const handleNotiClose = () => {
+    setIsNotiOpen(false);
+  };
+
   return (
     <>
       <div
         style={{ minHeight: "calc(100vh - 24px)" }}
         className="w-full px-4 md:px-6 bg-[#fbfbfb] flex flex-col gap-9 md:gap-12"
       >
-        <div className="pt-4 md:pt-0 mb-[-20px] md:mb-0">
+        <div className="pt-4 md:pt-0 mb-[-20px] md:mb-0 flex justify-between items-center">
           <h1 className="text-[#212529] font-medium text-[24px]">All orders</h1>
+
+          <div>
+            <Noti isOpen={isNotiOpen} onClose={handleNotiClose} />
+          </div>
         </div>
 
         <div className="flex flex-col gap-6 mb-6">
