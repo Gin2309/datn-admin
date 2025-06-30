@@ -11,6 +11,7 @@ import done from "@/assets/doneIcon.svg";
 import rework from "@/assets/reworkIcon.svg";
 
 import ProjectCard from "./Card";
+import StatisticsChart from "./StatisticsChart";
 import { useQuery } from "@tanstack/react-query";
 import { getOrderList, getOrderStatus } from "@/api/order.service";
 
@@ -52,6 +53,8 @@ const Home = () => {
       </div>
 
       <div className="flex flex-col gap-4 mb-4">
+        <StatisticsChart />
+
         <div className="card hidden md:grid grid-cols-4">
           {statusData.map((item) => {
             const count = countData?.find((data: any) => data.status === item.status)?.count || 0;

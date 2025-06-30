@@ -8,6 +8,7 @@ import Image from "next/image";
 import bellIcon from "@/assets/notifi.png";
 import { formatDate } from "@/helper/utility";
 import { Modal, Button } from "antd";
+// import { getNoti, readNoti } from "@/api/noti.service";
 
 interface NotiProps {
   isOpen?: boolean;

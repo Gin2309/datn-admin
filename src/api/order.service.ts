@@ -43,3 +43,7 @@ export function assignedOrder(id: any, employeeId: any) {
 export function getFeedBack(assignId: number) {
   return axiosClient.get(`feedback/by-assign?assignId=${assignId}`);
 }
+
+export function getStatistics() {
+  return axiosClient.get(`orders/statistics`);
+}
